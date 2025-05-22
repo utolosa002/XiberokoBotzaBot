@@ -2,20 +2,12 @@ import os
 import requests
 from telegram import Bot
 import asyncio
-import urllib.parse
-import hmac
-import base64
-import time
-import urllib.parse
 from hashlib import sha256
 from bs4 import BeautifulSoup
 from datetime import *
-import locale
-
 
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
-
 def get_news():
     url = f'https://www.xiberokobotza.org/berriak'
     response = requests.get(url)
@@ -42,14 +34,40 @@ def get_news():
         else:
             albistea.append("https://www.xiberokobotza.org/"+img_element[0]['src'])
         url_element   = title_element.find(href=True)
-        #locale.setlocale(locale.LC_ALL, 'eu_ES') 
-        new_datatime = datetime.strptime("2025 May 21", '%Y %B %d')
-        #new_datatime = datetime.strptime(data_element.text, '%Y %B %d')
+        data_fomateatuta= date_eu_to_en(data_element.text)
+        new_datatime = datetime.strptime(data_fomateatuta, '%Y %B %d')
         albistea.append(title_element.text.strip()+ "\n" + url_element['href'])
         albistea.append(new_datatime)
         albisteak.append(albistea)
         
     return albisteak
+    
+def date_eu_to_en(date):
+    data_list=date.split(" ")
+    if data_list[1] == "Urtarrila":
+        return data_list[0]+" January "+data_list[2]
+    elif data_list[1] == "Otsaila":
+        return data_list[0]+" February "+data_list[2]
+    elif data_list[1] == "Martxoa":
+        return data_list[0]+" March "+data_list[2]
+    elif data_list[1] == "Apirila":
+        return data_list[0]+" April "+data_list[2]
+    elif data_list[1] == "Maiatza":
+        return data_list[0]+" May "+data_list[2]
+    elif data_list[1] == "Ekaina":
+        return data_list[0]+" June "+data_list[2]
+    elif data_list[1] == "Uztaila":
+        return data_list[0]+" July "+data_list[2]
+    elif data_list[1] == "Abuztua":
+        return data_list[0]+" August "+data_list[2]
+    elif data_list[1] == "Iraila":
+        return data_list[0]+" September "+data_list[2]
+    elif data_list[1] == "Urria":
+        return data_list[0]+" October "+data_list[2]
+    elif data_list[1] == "Azaroa":
+        return data_list[0]+" November "+data_list[2]
+    else:
+        return data_list[0]+" December "+data_list[2]
     
 
 async def send_message(message):
