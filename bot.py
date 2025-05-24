@@ -36,7 +36,7 @@ def get_news():
         url_element   = title_element.find(href=True)
         data_fomateatuta= date_eu_to_en(data_element.text)
         new_datatime = datetime.strptime(data_fomateatuta, '%Y %B %d')
-        albistea.append(title_element.text.strip()+ "\n" + url_element['href'])
+        albistea.append(title_element.text.strip()+ "\n" +"https://www.xiberokobotza.org/"+ url_element['href'])
         albistea.append(new_datatime)
         albisteak.append(albistea)
         
