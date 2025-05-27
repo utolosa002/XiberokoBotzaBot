@@ -1,13 +1,18 @@
 import os
 import requests
+import urllib.request
 from telegram import Bot
 import asyncio
 from hashlib import sha256
 from bs4 import BeautifulSoup
 from datetime import *
+from mastodon import Mastodon
 
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
+MASTODON_ACCESS_TOKEN = os.environ.get('QxIGkniez46CZvI5Pvw6zdqkylWxQQeSCvdVHzqKL5c')
+MASTODON_URL = 'https://mastodon.eus'
+tmp_img = '/tmp/image.png'
 def get_news():
     url = f'https://www.xiberokobotza.org/berriak'
     response = requests.get(url)
@@ -36,7 +41,7 @@ def get_news():
         url_element   = title_element.find(href=True)
         data_fomateatuta= date_eu_to_en(data_element.text)
         new_datatime = datetime.strptime(data_fomateatuta, '%Y %B %d')
-        albistea.append(title_element.text.strip()+ "\n" +"https://www.xiberokobotza.org/"+ url_element['href'])
+        albistea.append(title_element.text.strip()+ "\n" +"https://www.xiberokobotza.org"+ url_element['href'])
         albistea.append(new_datatime)
         albisteak.append(albistea)
         
@@ -78,6 +83,24 @@ async def send_photo(photo, caption):
     bot = Bot(token=TELEGRAM_BOT_TOKEN)
     response = await bot.send_photo(chat_id=TELEGRAM_CHAT_ID, photo=photo, caption=caption)
 
+async def send_mastodon(photo_url, caption):
+    Masto_api = Mastodon(
+                access_token=MASTODON_ACCESS_TOKEN,
+                api_base_url=MASTODON_URL
+            )
+    
+    r = requests.get(photo_url)
+    with open(tmp_img,'wb') as f:
+        f.write(r.content)
+        
+    image = Masto_api.media_post(tmp_img, 
+                            mime_type ="image/png",
+                            description = caption
+                            )
+    Masto_api.status_post(caption, 
+                      media_ids=image["id"],
+                      )
+
 async def main():
     albisteak = get_news()
     gaur = datetime.strftime(datetime.today(), '%Y/%m/%d')
@@ -95,6 +118,7 @@ async def main():
             print(albiste_data)
         else:
             await send_photo(irudia[0],caption)
+            await send_mastodon(irudia[0],caption)
    
 if __name__ == '__main__':
     asyncio.run(main())
