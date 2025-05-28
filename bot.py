@@ -10,7 +10,7 @@ from mastodon import Mastodon
 
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
-MASTODON_ACCESS_TOKEN = os.environ.get('QxIGkniez46CZvI5Pvw6zdqkylWxQQeSCvdVHzqKL5c')
+MASTODON_ACCESS_TOKEN = os.getenv('MASTODON_ACCESS_TOKEN')
 MASTODON_URL = 'https://mastodon.eus'
 tmp_img = '/tmp/image.png'
 def get_news():
@@ -35,9 +35,9 @@ def get_news():
         print(img_element[0])
         if len(img_element) == 0:
             img_element   = job_element.find_all("img")
-            albistea.append("https://www.xiberokobotza.org/"+img_element[0]['src'])
+            albistea.append("https://www.xiberokobotza.org"+img_element[0]['src'])
         else:
-            albistea.append("https://www.xiberokobotza.org/"+img_element[0]['src'])
+            albistea.append("https://www.xiberokobotza.org"+img_element[0]['src'])
         url_element   = title_element.find(href=True)
         data_fomateatuta= date_eu_to_en(data_element.text)
         new_datatime = datetime.strptime(data_fomateatuta, '%Y %B %d')
