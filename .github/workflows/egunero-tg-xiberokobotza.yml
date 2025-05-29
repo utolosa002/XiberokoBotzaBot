@@ -2,7 +2,7 @@ name: egunero-tg-xiberokobotza
 
 on:
     schedule:
-        - cron: '0 19 * * *'
+        - cron: '30 18 * * *'
     push:
         branches:
             - main
@@ -29,4 +29,5 @@ jobs:
               env:
                 TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
                 TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+                MASTODON_ACCESS_TOKEN:  ${{ secrets.MASTODON_ACCESS_TOKEN }}
               run: python bot.py
