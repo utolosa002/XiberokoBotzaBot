@@ -43,7 +43,7 @@ def get_albistea(element):
 
     title_element = soup1.find("h1",id="title")
     img_element   = soup1.find_all("img")
-    #print(img_element[0])
+    print(img_element[0])
     if len(img_element) == 0:
         img_element   = soup1.find_all("img")
         albistea.append("https://www.xiberokobotza.eus"+img_element[0]['src'])
@@ -96,7 +96,7 @@ async def main():
             print(gaur)
             print(albiste_data)
         else:
-            await send_photo(irudia[0],caption)
+            await send_photo(img,caption)
             await send_mastodon(irudia[0],caption)
    
 if __name__ == '__main__':
