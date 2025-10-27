@@ -42,7 +42,8 @@ def get_albistea(element):
     new_datatime = datetime.strptime(data, '%Y/%m/%d %H:%M')
 
     title_element = soup1.find("h1",id="title")
-    img_element   = soup1.find_all("img")
+    news_element = soup1.find("div",id="news")
+    img_element   = news_element.find_all("img")
     print(img_element[0])
     if len(img_element) == 0:
         img_element   = soup1.find_all("img")
@@ -96,7 +97,7 @@ async def main():
             print(gaur)
             print(albiste_data)
         else:
-            await send_photo(img,caption)
+            await send_photo(irudia[0],caption)
             await send_mastodon(irudia[0],caption)
    
 if __name__ == '__main__':
