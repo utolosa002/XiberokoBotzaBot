@@ -44,11 +44,13 @@ def get_albistea(element):
     title_element = soup1.find("h1",id="title")
     news_element = soup1.find("div",id="news")
     img_element   = news_element.find_all("img")
-    print(img_element[0])
+    #print(img_element[0])
     if len(img_element) == 0:
         img_element   = soup1.find_all("img")
+        print('imga: '+img_element[0]['src'])
         albistea.append("https://www.xiberokobotza.eus"+img_element[0]['src'])
     else:
+        print('imga2: '+img_element[0]['src'])
         albistea.append("https://www.xiberokobotza.eus"+img_element[0]['src'])
 
     albistea.append(title_element.text.strip()+ "\n" +albiste1_url)
@@ -86,7 +88,6 @@ async def main():
     gaur = datetime.strftime(datetime.today(), '%Y/%m/%d')
     for albistea in albisteak:
         img = albistea[0]
-        irudia=img.split('?')
         title= albistea[1]
         print(gaur)
         print(title)
@@ -97,8 +98,8 @@ async def main():
             print(gaur)
             print(albiste_data)
         else:
-            await send_photo(irudia[0],caption)
-            await send_mastodon(irudia[0],caption)
+            await send_photo(img,caption)
+            await send_mastodon(img,caption)
    
 if __name__ == '__main__':
     asyncio.run(main())
