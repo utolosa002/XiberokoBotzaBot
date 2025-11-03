@@ -48,10 +48,10 @@ def get_albistea(element):
     if len(img_element) == 0:
         img_element   = soup1.find_all("img")
         print('imga: '+img_element[0]['src'])
-        albistea.append("https://www.xiberokobotza.eus"+img_element[0]['src'])
+        albistea.append("https://xiberokobotza.eus"+img_element[0]['src'])
     else:
         print('imga2: '+img_element[0]['src'])
-        albistea.append("https://www.xiberokobotza.eus"+img_element[0]['src'])
+        albistea.append("https://xiberokobotza.eus"+img_element[0]['src'])
 
     albistea.append(title_element.text.strip()+ "\n" +albiste1_url)
     albistea.append(new_datatime)
