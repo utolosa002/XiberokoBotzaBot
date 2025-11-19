@@ -98,8 +98,8 @@ async def main():
             print(gaur)
             print(albiste_data)
         else:
-            await send_photo(img,caption)
             await send_mastodon(img,caption)
+            await send_photo(img,caption)
    
 if __name__ == '__main__':
     asyncio.run(main())
